@@ -34,7 +34,8 @@ public class DiscardServer {
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)          // (5)
                     .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
-
+            
+            System.out.println("start listener, port:" + port);
             // Bind and start to accept incoming connections.
             ChannelFuture f = b.bind(port).sync(); // (7)
             // Wait until the server socket is closed.

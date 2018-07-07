@@ -1,0 +1,8 @@
+import "HeaderProtocol.proto";
+
+message EquipmentConfig
+{
+	required Header header = 1;
+	required string equipmentID = 2;
+	required string configInformation = 3;
+}

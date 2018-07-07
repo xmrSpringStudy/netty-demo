@@ -1,5 +1,7 @@
 package first.netty_demo.netty;
 
+import first.netty_demo.EquipmentProtocol;
+import first.netty_demo.HeaderProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -20,14 +22,23 @@ public class DiscardServerHandler extends ChannelInboundHandlerAdapter { // (1)
     	
     	ByteBuf in = (ByteBuf) msg;
         try {
+        	/*
             while (in.isReadable()) {
                 System.out.print((char) in.readByte());
                 System.out.flush();
             }
-            System.out.print("\n");            
-    		
+            System.out.print("\n");   */
+            
+            byte[] req = new byte[in.readableBytes()];
+            in.readBytes(req);
+            first.netty_demo.netty.HeaderProtocol.Header header = first.netty_demo.netty.HeaderProtocol.Header.parseFrom(req);
+            System.out.println("message type " + header.getMsgType().getType() + "; version:" + header.getVersion() + ";cseq:" + header.getCseq());
+            first.netty_demo.netty.EquipmentProtocol.EquipmentConfig EequipmentConfig = first.netty_demo.netty.EquipmentProtocol.EquipmentConfig.parseFrom(req);
+            System.out.println("equipment id:" + EequipmentConfig.getEquipmentID() + ";content:" + EequipmentConfig.getConfigInformation());
     		send(ctx, "I'm ok!\n’");
             
+        } catch(Exception ex) {
+        	ex.printStackTrace();
         } finally {
             ReferenceCountUtil.release(msg);
         }

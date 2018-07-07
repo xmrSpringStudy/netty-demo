@@ -1,0 +1,20 @@
+//
+// @brief 头部(协议层数据)
+//
+message Header 
+{
+	message MsgType
+	{
+		enum MessageType
+		{ 
+			REQUEST 	= 0; 	// 请求   
+			RESPONSE 	= 1; 	// 响应   
+			NOTIFY 		= 2; 	// 通知   
+		} 
+		optional MessageType type 	= 1  [default = NOTIFY];  	// 发送目标类型，包括服务、服务类型以及客户端，默认为服务，如果是服务类型，则主要用于通知 
+		optional string 	extends = 2;               			// 扩展信息   
+	}
+	required int32			version = 1;	// 协议版本号
+	required int32 			cseq 	= 2;  	// 消息序列号
+	optional MsgType 		msgType = 3;   	// 消息类型
+}
